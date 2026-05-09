@@ -1,0 +1,388 @@
+<Window x:Class="ImageEnhancementWpf.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Настройки — ImageUP"
+        Width="540" Height="680"
+        MinWidth="440" MinHeight="560"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize">
+
+    <Window.Background>
+        <SolidColorBrush Color="{DynamicResource SurfaceDark}"/>
+    </Window.Background>
+
+    <Window.Resources>
+        <Style TargetType="ScrollBar" BasedOn="{StaticResource DarkScrollBar}"/>
+
+        <!-- Стиль переключателя темы (сегментированная кнопка) -->
+        <Style x:Key="ThemeSegmentLeft" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceInputBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderSubtleBrush}"/>
+            <Setter Property="BorderThickness" Value="1,1,0,1"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="bg"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8,0,0,8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="bg" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ThemeSegmentRight" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceInputBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderSubtleBrush}"/>
+            <Setter Property="BorderThickness" Value="1,1,1,1"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="bg"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0,8,8,0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="bg" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Toggle Switch style -->
+        <Style x:Key="ToggleSwitch" TargetType="CheckBox">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Border x:Name="track" Width="40" Height="22" CornerRadius="11"
+                                Background="{DynamicResource BorderSubtleBrush}">
+                            <Border x:Name="thumb" Width="16" Height="16" CornerRadius="8"
+                                    Background="White" HorizontalAlignment="Left"
+                                    Margin="3,0,0,0" VerticalAlignment="Center">
+                                <Border.RenderTransform>
+                                    <TranslateTransform x:Name="thumbTranslate" X="0"/>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="track" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="thumbTranslate"
+                                                             Storyboard.TargetProperty="X"
+                                                             To="18" Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="thumbTranslate"
+                                                             Storyboard.TargetProperty="X"
+                                                             To="0" Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="21">
+
+            <!-- ─── Заголовок ─────────────────────────────────────────────── -->
+            <StackPanel Margin="0,0,0,24">
+                <TextBlock Text="⚙ Настройки"
+                           FontSize="22" FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <TextBlock Text="Оформление, экспорт и поведение программы"
+                           FontSize="12" Foreground="{DynamicResource TextMutedBrush}"
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- ─── Секция «Оформление» ────────────────────────────────────── -->
+            <Border Background="{DynamicResource CardBrush}"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="1" CornerRadius="14"
+                    Padding="20,16" Margin="0,0,0,13">
+                <StackPanel>
+                    <TextBlock Text="ОФОРМЛЕНИЕ"
+                               FontSize="10" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextMutedBrush}"
+                               Margin="0,0,0,14"/>
+
+                    <!-- Тема -->
+                    <Border Background="{DynamicResource SurfaceInputBrush}"
+                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                            BorderThickness="1" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="Тема интерфейса"
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Переключайте между тёмным и светлым оформлением"
+                                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                           Margin="0,3,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                        VerticalAlignment="Center" Margin="16,0,0,0">
+                                <RadioButton x:Name="DarkThemeButton"
+                                             Content="🌙 Тёмная"
+                                             Style="{StaticResource ThemeSegmentLeft}"
+                                             GroupName="ThemeGroup"
+                                             Checked="DarkThemeButton_Checked"/>
+                                <RadioButton x:Name="LightThemeButton"
+                                             Content="☀ Светлая"
+                                             Style="{StaticResource ThemeSegmentRight}"
+                                             GroupName="ThemeGroup"
+                                             Checked="LightThemeButton_Checked"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Автооткрытие результата -->
+                    <Border Background="{DynamicResource SurfaceInputBrush}"
+                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                            BorderThickness="1" CornerRadius="10" Padding="16,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="Показывать результат сразу"
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="После обработки автоматически переключаться на вкладку «После»"
+                                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                           Margin="0,3,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <CheckBox x:Name="AutoShowResultToggle"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ToggleSwitch}"
+                                      VerticalAlignment="Center" Margin="16,0,0,0"
+                                      Checked="AutoShowResult_Changed"
+                                      Unchecked="AutoShowResult_Changed"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- ─── Секция «Экспорт» ──────────────────────────────────────── -->
+            <Border Background="{DynamicResource CardBrush}"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="1" CornerRadius="14"
+                    Padding="20,16" Margin="0,0,0,13">
+                <StackPanel>
+                    <TextBlock Text="ЭКСПОРТ"
+                               FontSize="10" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextMutedBrush}"
+                               Margin="0,0,0,14"/>
+
+                    <!-- Формат сохранения -->
+                    <Border Background="{DynamicResource SurfaceInputBrush}"
+                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                            BorderThickness="1" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="Формат сохранения по умолчанию"
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Используется при экспорте обработанного изображения"
+                                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <ComboBox x:Name="DefaultFormatCombo"
+                                      Grid.Column="1"
+                                      Style="{StaticResource DarkComboBox}"
+                                      Width="100" VerticalAlignment="Center" Margin="16,0,0,0"
+                                      SelectionChanged="DefaultFormat_Changed">
+                                <ComboBoxItem Content="PNG" Tag="png"/>
+                                <ComboBoxItem Content="JPEG" Tag="jpeg"/>
+                                <ComboBoxItem Content="BMP" Tag="bmp"/>
+                            </ComboBox>
+                        </Grid>
+                    </Border>
+
+                    <!-- Качество JPEG -->
+                    <Border Background="{DynamicResource SurfaceInputBrush}"
+                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                            BorderThickness="1" CornerRadius="10" Padding="16,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="Качество JPEG"
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock x:Name="JpegQualityLabel"
+                                           Text="85%"
+                                           FontSize="11" Foreground="{DynamicResource AccentBrush}"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <Slider x:Name="JpegQualitySlider"
+                                    Grid.Column="1"
+                                    Style="{StaticResource DarkSlider}"
+                                    Minimum="10" Maximum="100" Value="85"
+                                    VerticalAlignment="Center" Margin="16,0,0,0"
+                                    ValueChanged="JpegQuality_Changed"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- ─── Секция «Обработка» ────────────────────────────────────── -->
+            <Border Background="{DynamicResource CardBrush}"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="1" CornerRadius="14"
+                    Padding="20,16" Margin="0,0,0,13">
+                <StackPanel>
+                    <TextBlock Text="ОБРАБОТКА"
+                               FontSize="10" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextMutedBrush}"
+                               Margin="0,0,0,14"/>
+
+                    <!-- Интерполяция -->
+                    <Border Background="{DynamicResource SurfaceInputBrush}"
+                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                            BorderThickness="1" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="Режим интерполяции"
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Алгоритм масштабирования при изменении размера"
+                                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <ComboBox x:Name="InterpolationCombo"
+                                      Grid.Column="1"
+                                      Style="{StaticResource DarkComboBox}"
+                                      Width="130" VerticalAlignment="Center" Margin="16,0,0,0"
+                                      SelectionChanged="Interpolation_Changed">
+                                <ComboBoxItem Content="Двулинейная" Tag="bilinear"/>
+                                <ComboBoxItem Content="Бикубическая" Tag="bicubic"/>
+                                <ComboBoxItem Content="Ближайший" Tag="nearest"/>
+                            </ComboBox>
+                        </Grid>
+                    </Border>
+
+                    <!-- Подтверждение сброса -->
+                    <Border Background="{DynamicResource SurfaceInputBrush}"
+                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                            BorderThickness="1" CornerRadius="10" Padding="16,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="Подтверждать сброс параметров"
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Показывать диалог перед сбросом настроек метода"
+                                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                           Margin="0,3,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <CheckBox x:Name="ConfirmResetToggle"
+                                      Grid.Column="1"
+                                      Style="{StaticResource ToggleSwitch}"
+                                      VerticalAlignment="Center" Margin="16,0,0,0"
+                                      Checked="ConfirmReset_Changed"
+                                      Unchecked="ConfirmReset_Changed"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- ─── Сброс настроек ─────────────────────────────────────────── -->
+            <Border Background="{DynamicResource CardBrush}"
+                    BorderBrush="#EF444433"
+                    BorderThickness="1" CornerRadius="14"
+                    Padding="20,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="Сбросить все настройки"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Foreground="#EF4444"/>
+                        <TextBlock Text="Вернуть тему, форматы и переключатели к значениям по умолчанию"
+                                   FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                   Margin="0,3,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <Button Grid.Column="1"
+                            Content="Сбросить"
+                            Foreground="#EF4444"
+                            Background="Transparent"
+                            BorderBrush="#EF444466"
+                            BorderThickness="1"
+                            Padding="14,8"
+                            FontSize="13"
+                            VerticalAlignment="Center" Margin="16,0,0,0"
+                            Cursor="Hand"
+                            Template="{StaticResource ModernButtonTemplate}"
+                            Click="ResetAll_Click"/>
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

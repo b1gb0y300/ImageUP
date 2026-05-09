@@ -1,0 +1,58 @@
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]og/
+[Ll]ogs/
+x64/
+x86/
+[Aa]rtifacts/
+*.log
+
+# VS / Rider / tooling
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# DotNet
+*.pidb
+*.svclog
+*.pdb
+
+# NuGet
+packages/
+*.nupkg
+**/packages/*/
+!**/packages/build/
+*.snupkg
+
+# Rider / ReSharper / VS Code
+_ReSharper*/
+*.DotSettings.user
+.vscode/
+
+# Test results
+TestResult*/
+[TestResults]/
+*.VisualState.xml
+*.coverage
+*.coveragexml
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+*.swp
+*.swo
+~$*
+
+# Publish output
+publish/
+*.Publish.xml
+
+# Images / outputs that не нужны в репо (если нужно — удали эту строку)
+*.tmp.png

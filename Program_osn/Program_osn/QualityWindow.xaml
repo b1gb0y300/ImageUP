@@ -1,0 +1,128 @@
+<Window x:Class="ImageEnhancementWpf.QualityWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Оценка качества — ImageUP"
+        Height="580" Width="560"
+        MinHeight="520" MinWidth="480"
+        WindowStartupLocation="CenterOwner">
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{DynamicResource WindowBackgroundStartColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource WindowBackgroundEndColor}" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Результаты оценки качества"
+                   FontSize="20" FontWeight="Bold"
+                   Foreground="{DynamicResource TextPrimaryBrush}"
+                   Margin="0,0,0,16"/>
+
+        <!-- SSIM -->
+        <Border Grid.Row="1" Background="{DynamicResource CardBrush}"
+                CornerRadius="14" Padding="16" Margin="0,0,0,10"
+                BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1"
+                Effect="{StaticResource CardShadow}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="SSIM" FontSize="15" FontWeight="Bold"
+                               Foreground="{DynamicResource TextSecondary2Brush}"/>
+                    <TextBlock x:Name="SsimValueText" Text="—" FontSize="18" FontWeight="Bold"
+                               Foreground="#22C55E" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Grid.Row="1" FontSize="12"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" LineHeight="18"
+                           Text="Структурное сходство (Structural Similarity Index). Диапазон 0–1; чем ближе к 1 — тем ближе результат к оригиналу по яркости, контрасту и структуре."/>
+            </Grid>
+        </Border>
+
+        <!-- PSNR -->
+        <Border Grid.Row="2" Background="{DynamicResource CardBrush}"
+                CornerRadius="14" Padding="16" Margin="0,0,0,10"
+                BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1"
+                Effect="{StaticResource CardShadow}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBlock Text="PSNR" FontSize="15" FontWeight="Bold"
+                               Foreground="{DynamicResource TextSecondary2Brush}"/>
+                    <TextBlock x:Name="PsnrValueText" Text="—" FontSize="18" FontWeight="Bold"
+                               Foreground="#6366F1" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Grid.Row="1" FontSize="12"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" LineHeight="18"
+                           Text="Пиковое отношение сигнал/шум, дБ. Чем выше — тем меньше искажений. Значения &gt; 30 dB — хорошее качество; &gt; 40 dB — отличное."/>
+            </Grid>
+        </Border>
+
+        <!-- Sharpness -->
+        <Border Grid.Row="3" Background="{DynamicResource CardBrush}"
+                CornerRadius="14" Padding="16" Margin="0,0,0,10"
+                BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1"
+                Effect="{StaticResource CardShadow}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Резкость (Sharpness)" FontSize="15" FontWeight="Bold"
+                           Foreground="{DynamicResource TextSecondary2Brush}" Margin="0,0,0,8"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                    <StackPanel Margin="0,0,28,0">
+                        <TextBlock Text="до обработки" FontSize="10"
+                                   Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,2"/>
+                        <TextBlock x:Name="SharpOrigText" Text="—" FontSize="17" FontWeight="Bold"
+                                   Foreground="#F59E0B"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="после обработки" FontSize="10"
+                                   Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,2"/>
+                        <TextBlock x:Name="SharpProcText" Text="—" FontSize="17" FontWeight="Bold"
+                                   Foreground="#F59E0B"/>
+                    </StackPanel>
+                    <TextBlock x:Name="SharpDeltaText" Text="" FontSize="13" FontWeight="SemiBold"
+                               VerticalAlignment="Bottom" Margin="0,0,0,1"/>
+                </StackPanel>
+                <TextBlock Grid.Row="2" FontSize="12"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" LineHeight="18"
+                           Text="Безэталонная метрика (дисперсия лапласиана). Работает и при разных размерах изображений — подходит для оценки AI-методов (например, ×4 супер-разрешение)."/>
+            </Grid>
+        </Border>
+
+        <!-- Hint -->
+        <Border Grid.Row="4" Background="{DynamicResource SurfaceInputBrush}"
+                CornerRadius="12" Padding="12" Margin="0,0,0,16"
+                BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1">
+            <TextBlock x:Name="QualityHintText" FontSize="11"
+                       Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap"
+                       Text="Метрики вычисляются между исходным и текущим обработанным изображением."/>
+        </Border>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Закрыть" Width="100" Height="36"
+                    Style="{StaticResource GhostButton}"
+                    Click="Close_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
