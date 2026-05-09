@@ -16,11 +16,9 @@ namespace ImageEnhancementWpf
             Close();
         }
 
-        // ── Навигационные обработчики ─────────────────────────────────
 
         private void ScrollToSection(string sectionHeaderText)
         {
-            // Ищем TextBlock с нужным текстом внутри ContentScroller
             if (ContentScroller.Content is not Border outerBorder) return;
             if (outerBorder.Child is not StackPanel sp) return;
             foreach (UIElement child in sp.Children)

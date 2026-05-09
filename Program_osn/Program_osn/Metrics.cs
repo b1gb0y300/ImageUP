@@ -140,11 +140,6 @@ namespace ImageEnhancement
             return 10.0 * Math.Log10(255.0 * 255.0 / mse);
         }
 
-        /// <summary>
-        /// Безэталонная оценка резкости — дисперсия лапласиана (Laplacian Variance).
-        /// Чем выше значение, тем резче изображение.
-        /// Работает без эталона: подходит для AI-методов с изменением разрешения.
-        /// </summary>
         public static double ComputeSharpness(Bitmap img)
         {
             var gray = ImageProcessors.ToGrayscale(img);
@@ -158,7 +153,6 @@ namespace ImageEnhancement
             {
                 for (int x = 1; x < w - 1; x++)
                 {
-                    // Ядро Лапласа 3×3: центр -4, соседи +1
                     double v = -4.0 * gray.GetPixel(x, y).R
                                + gray.GetPixel(x - 1, y).R
                                + gray.GetPixel(x + 1, y).R
@@ -171,7 +165,7 @@ namespace ImageEnhancement
             }
 
             double mean = sum / count;
-            return sum2 / count - mean * mean; // дисперсия
+            return sum2 / count - mean * mean; 
         }
     }
 }

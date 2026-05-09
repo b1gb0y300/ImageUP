@@ -1,10 +1,8 @@
 <Application x:Class="ImageEnhancementWpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- StartupUri убран: окно открывается из App.xaml.cs после применения темы -->
     <Application.Resources>
 
-        <!-- ═══ Цветовые токены (тёмная тема по умолчанию) ════════════════ -->
         <Color x:Key="AccentColor">#6366F1</Color>
         <Color x:Key="AccentHoverColor">#818CF8</Color>
         <Color x:Key="AccentGlowColor">#6366F1</Color>
@@ -16,11 +14,9 @@
         <Color x:Key="TextSecondary">#A1A1AA</Color>
         <Color x:Key="TextMuted">#71717A</Color>
 
-        <!-- Цвета для градиента фона окна -->
         <Color x:Key="WindowBackgroundStartColor">#0F0F14</Color>
         <Color x:Key="WindowBackgroundEndColor">#0A0A0E</Color>
 
-        <!-- ═══ Кисти (переопределяются ThemeManager при запуске) ══════════ -->
         <SolidColorBrush x:Key="AccentBrush"        Color="{StaticResource AccentColor}"/>
         <SolidColorBrush x:Key="AccentBrushHover"   Color="{StaticResource AccentHoverColor}"/>
         <SolidColorBrush x:Key="DarkPanelBrush"     Color="{StaticResource SurfaceElevated}"/>
@@ -30,7 +26,6 @@
         <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
         <SolidColorBrush x:Key="TextMutedBrush"     Color="{StaticResource TextMuted}"/>
 
-        <!-- Тематические кисти -->
         <SolidColorBrush x:Key="HeaderBrush"          Color="#16161E"/>
         <SolidColorBrush x:Key="LeftPanelBrush"       Color="#12121A"/>
         <SolidColorBrush x:Key="SurfaceInputBrush"    Color="#1A1A24"/>
@@ -44,7 +39,6 @@
         <SolidColorBrush x:Key="TextBoxBackgroundBrush"  Color="#111118"/>
         <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="#1E1E28"/>
 
-        <!-- ═══ Прочие ресурсы ════════════════════════════════════════════ -->
         <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#6366F1" Offset="0"/>
             <GradientStop Color="#8B5CF6" Offset="1"/>
@@ -62,7 +56,6 @@
             <Setter Property="FontFamily" Value="Roboto, Segoe UI, sans-serif"/>
         </Style>
 
-        <!-- ═══ Шаблон кнопки ════════════════════════════════════════════ -->
         <ControlTemplate x:Key="ModernButtonTemplate" TargetType="Button">
             <Border x:Name="border"
                     Background="{TemplateBinding Background}"
@@ -139,7 +132,6 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
-        <!-- GhostButton теперь использует DynamicResource для фона -->
         <Style x:Key="GhostButton" TargetType="Button">
             <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
             <Setter Property="Background" Value="{DynamicResource GhostButtonBg}"/>
@@ -250,11 +242,9 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Slider">
                         <Grid VerticalAlignment="Center">
-                            <!-- Фон трека (незаполненная часть) -->
                             <Border Background="{DynamicResource BorderSubtleBrush}"
                                     Height="4" CornerRadius="2" VerticalAlignment="Center"/>
                             <Track x:Name="PART_Track">
-                                <!-- Заполненная часть — акцентный цвет -->
                                 <Track.DecreaseRepeatButton>
                                     <RepeatButton Command="Slider.DecreaseLarge">
                                         <RepeatButton.Template>
@@ -268,7 +258,6 @@
                                 <Track.IncreaseRepeatButton>
                                     <RepeatButton Command="Slider.IncreaseLarge" Opacity="0"/>
                                 </Track.IncreaseRepeatButton>
-                                <!-- Ползунок — белый кружок с акцентной рамкой -->
                                 <Track.Thumb>
                                     <Thumb>
                                         <Thumb.Template>

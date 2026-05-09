@@ -744,13 +744,6 @@ namespace ImageEnhancement
             return seam;
         }
 
-        // ── CLAHE ────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Contrast Limited Adaptive Histogram Equalization.
-        /// Делит изображение на тайлы, применяет к каждому эквализацию
-        /// с ограничением контраста (clipLimit) и билинейно интерполирует
-        /// результат — стандарт в медицинской визуализации (рентген, МРТ).
-        /// </summary>
         public static Bitmap CLAHE(Bitmap source, int tileSize = 64, double clipLimit = 2.5)
         {
             var gray  = ToGrayscale(source);
@@ -760,7 +753,6 @@ namespace ImageEnhancement
             int tilesX = Math.Max(1, (w + tileSize - 1) / tileSize);
             int tilesY = Math.Max(1, (h + tileSize - 1) / tileSize);
 
-            // Для каждого тайла строим таблицу LUT (256 → byte)
             var lut = new byte[tilesY, tilesX, 256];
 
             for (int ty = 0; ty < tilesY; ty++)
@@ -778,7 +770,6 @@ namespace ImageEnhancement
                         for (int x = x0; x < x1; x++)
                             hist[gray.GetPixel(x, y).R]++;
 
-                    // Срезаем пики и перераспределяем
                     int clipAbs = Math.Max(1, (int)(clipLimit * n / 256));
                     int excess  = 0;
                     for (int i = 0; i < 256; i++)
@@ -788,7 +779,6 @@ namespace ImageEnhancement
                     int add = excess / 256;
                     for (int i = 0; i < 256; i++) hist[i] += add;
 
-                    // Накопленная гистограмма → LUT
                     int cumsum = 0;
                     for (int i = 0; i < 256; i++)
                     {
@@ -798,7 +788,6 @@ namespace ImageEnhancement
                 }
             }
 
-            // Билинейная интерполяция между соседними тайлами
             var result = new Bitmap(w, h);
             for (int y = 0; y < h; y++)
             {
@@ -806,7 +795,6 @@ namespace ImageEnhancement
                 {
                     int bin = gray.GetPixel(x, y).R;
 
-                    // Центр ближайшего тайла
                     float fTx = (x - tileSize * 0.5f) / tileSize;
                     float fTy = (y - tileSize * 0.5f) / tileSize;
                     int   tx0 = Math.Clamp((int)Math.Floor(fTx), 0, tilesX - 1);
@@ -830,18 +818,11 @@ namespace ImageEnhancement
             return result;
         }
 
-        // ── Multi-Scale Retinex ───────────────────────────────────────────
-        /// <summary>
-        /// Мультимасштабный ретинекс (MSR) — моделирует адаптацию зрения,
-        /// нормализует освещение и усиливает локальный контраст. Сохраняет цвет.
-        /// Применяется в медицинской визуализации, ночной съёмке, спутниковых снимках.
-        /// </summary>
         public static Bitmap MultiScaleRetinex(Bitmap source, double[] sigmas, double[] weights)
         {
             int w = source.Width;
             int h = source.Height;
 
-            // Логарифм исходных каналов (log(1 + I))
             var logR = new double[h, w];
             var logG = new double[h, w];
             var logB = new double[h, w];
@@ -866,7 +847,6 @@ namespace ImageEnhancement
                 double sigma = sigmas[s];
                 double w_s   = weights[s];
 
-                // Гауссово размытие каждого канала
                 var blurredR = GaussianBlurChannel(ExtractChannel(source, 0), sigma);
                 var blurredG = GaussianBlurChannel(ExtractChannel(source, 1), sigma);
                 var blurredB = GaussianBlurChannel(ExtractChannel(source, 2), sigma);
@@ -882,7 +862,6 @@ namespace ImageEnhancement
                 }
             }
 
-            // Нормализуем каждый канал в [0, 255]
             static byte Norm(double[,] ch, int y, int x)
             {
                 double min = double.MaxValue, max = double.MinValue;
@@ -897,7 +876,6 @@ namespace ImageEnhancement
                 return (byte)Math.Clamp((ch[y, x] - min) / (max - min) * 255, 0, 255);
             }
 
-            // Предвычислим нормировочные значения
             double minR = double.MaxValue, maxR = double.MinValue;
             double minG = double.MaxValue, maxG = double.MinValue;
             double minB = double.MaxValue, maxB = double.MinValue;
@@ -951,7 +929,6 @@ namespace ImageEnhancement
             }
             for (int i = 0; i < kernel.Length; i++) kernel[i] /= sum;
 
-            // Горизонтальный проход
             var tmp = new double[h, w];
             for (int y = 0; y < h; y++)
                 for (int x = 0; x < w; x++)
@@ -962,7 +939,6 @@ namespace ImageEnhancement
                     tmp[y, x] = v;
                 }
 
-            // Вертикальный проход
             var result = new double[h, w];
             for (int y = 0; y < h; y++)
                 for (int x = 0; x < w; x++)
@@ -991,8 +967,6 @@ namespace ImageEnhancement
             return result;
         }
 
-        // ── Логарифмическое преобразование ─────────────────────────────────
-        // Гонсалес, Вудс §3.2.2: s = c · log(1 + r),  c = 255 / log(256)
         public static Bitmap LogarithmicTransform(Bitmap source, double c = 0)
         {
             var gray = ToGrayscale(source);
@@ -1009,15 +983,12 @@ namespace ImageEnhancement
             return result;
         }
 
-        // ── Бинаризация по методу Оцу ──────────────────────────────────────
-        // Гонсалес, Вудс §10.3.3: T* = arg max σ²_B(T) = ω₀·ω₁·(μ₀−μ₁)²
         public static Bitmap OtsuBinarization(Bitmap source)
         {
             var gray = ToGrayscale(source);
             int w = gray.Width, h = gray.Height;
             int total = w * h;
 
-            // Гистограмма
             var hist = new int[256];
             for (int y = 0; y < h; y++)
                 for (int x = 0; x < w; x++)
@@ -1052,9 +1023,6 @@ namespace ImageEnhancement
             return result;
         }
 
-        // ── Псевдоцвет (тепловая карта) ────────────────────────────────────
-        // Гонсалес, Вудс §6.3.2: преобразование яркости в RGB через функции T_R, T_G, T_B
-        // Реализуется классическая карта Jet: холодные → тёплые тона
         public static Bitmap PseudoColor(Bitmap source, int colormapIndex = 0)
         {
             var gray = ToGrayscale(source);
@@ -1063,19 +1031,18 @@ namespace ImageEnhancement
             for (int y = 0; y < h; y++)
                 for (int x = 0; x < w; x++)
                 {
-                    double v = gray.GetPixel(x, y).R / 255.0; // [0,1]
+                    double v = gray.GetPixel(x, y).R / 255.0; 
                     Color c = colormapIndex switch
                     {
-                        0 => JetColor(v),    // Jet (тепловая)
-                        1 => HotColor(v),    // Hot (огонь)
-                        _ => RainbowColor(v) // Rainbow
+                        0 => JetColor(v),    
+                        1 => HotColor(v),   
+                        _ => RainbowColor(v) 
                     };
                     result.SetPixel(x, y, c);
                 }
             return result;
         }
 
-        // Jet: синий→голубой→зелёный→жёлтый→красный
         private static Color JetColor(double v)
         {
             double r = Math.Clamp(1.5 - Math.Abs(4 * v - 3), 0, 1);
@@ -1084,7 +1051,6 @@ namespace ImageEnhancement
             return Color.FromArgb((int)(r*255), (int)(g*255), (int)(b*255));
         }
 
-        // Hot: чёрный→красный→жёлтый→белый
         private static Color HotColor(double v)
         {
             double r = Math.Clamp(v * 3,       0, 1);
@@ -1093,7 +1059,6 @@ namespace ImageEnhancement
             return Color.FromArgb((int)(r*255), (int)(g*255), (int)(b*255));
         }
 
-        // Rainbow: HSV sweep H=240→0 (синий→красный)
         private static Color RainbowColor(double v)
         {
             double h = (1.0 - v) * 240.0;

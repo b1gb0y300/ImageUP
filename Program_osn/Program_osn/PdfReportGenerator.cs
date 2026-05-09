@@ -9,12 +9,10 @@ using QuestPDF.Infrastructure;
 
 namespace ImageEnhancementWpf
 {
-    /// <summary>Метаданные исходного изображения для PDF-отчёта.</summary>
     internal record ImageMetadata(string DpiStr, string ColorMode, string FileFormat, string FileSizeStr);
 
     internal static class PdfReportGenerator
     {
-        // ── Полностью светлая цветовая схема ──────────────────────────────────
         private const string BgPage       = "#f4f6fb";
         private const string BgCard       = "#ffffff";
         private const string BgInner      = "#f1f5f9";
@@ -31,7 +29,6 @@ namespace ImageEnhancementWpf
         private const string Warn         = "#d97706";
         private const string Bad          = "#dc2626";
 
-        // ── Описания методов (для пользователя) ───────────────────────────────
         private static readonly Dictionary<string, string> MethodDescriptions =
             new(StringComparer.OrdinalIgnoreCase)
         {
@@ -59,9 +56,6 @@ namespace ImageEnhancementWpf
             ["Бинаризация по методу Оцу"]           = "Автоматически находит оптимальный порог бинаризации, максимизируя межклассовую дисперсию. Переводит изображение в чёрно-белое.",
         };
 
-        /// <summary>
-        /// Генерирует PDF-отчёт об обработке изображения.
-        /// </summary>
         public static void Generate(
             string outputPath,
             Bitmap original,
@@ -85,7 +79,6 @@ namespace ImageEnhancementWpf
             byte[] origBytes  = BitmapToJpegBytes(original, 88);
             byte[]? procBytes = processed != null ? BitmapToJpegBytes(processed, 88) : null;
 
-            // Имена методов цепочки
             var methodNames = new List<string>();
             foreach (var (name, _) in pipeline)
                 methodNames.Add(name);
@@ -108,13 +101,11 @@ namespace ImageEnhancementWpf
 
                     page.Content().Column(col =>
                     {
-                        // ── СВЕТЛАЯ ШАПКА ─────────────────────────────────
                         col.Item()
                             .Background(BgCard)
                             .Border(1).BorderColor(BorderMain)
                             .Column(header =>
                             {
-                                // Акцентная полоска сверху
                                 header.Item().Height(4).Background(Accent);
                                 header.Item()
                                     .PaddingHorizontal(20).PaddingVertical(16)
@@ -149,7 +140,6 @@ namespace ImageEnhancementWpf
 
                         col.Item().Height(16);
 
-                        // ── ЦЕПОЧКА МЕТОДОВ (если несколько) ─────────────
                         if (pipeline.Count > 1)
                         {
                             col.Item()
@@ -170,7 +160,6 @@ namespace ImageEnhancementWpf
                             col.Item().Height(14);
                         }
 
-                        // ── ИЗОБРАЖЕНИЯ ───────────────────────────────────
                         col.Item()
                             .Background(BgCard)
                             .Border(1).BorderColor(BorderMain)
@@ -223,7 +212,6 @@ namespace ImageEnhancementWpf
                                         });
                                 }
 
-                                // Метаданные изображения
                                 if (metadata != null)
                                 {
                                     c.Item().Height(10);
@@ -244,7 +232,6 @@ namespace ImageEnhancementWpf
 
                         col.Item().Height(14);
 
-                        // ── ПРИМЕНЁННЫЕ МЕТОДЫ ────────────────────────────
                         col.Item()
                             .Background(BgCard)
                             .Border(1).BorderColor(BorderMain)
@@ -259,7 +246,6 @@ namespace ImageEnhancementWpf
 
                                 if (pipeline.Count <= 1)
                                 {
-                                    // Один метод — подробный блок
                                     string name = methodNames[0];
                                     string desc = GetDescription(name);
 
@@ -275,7 +261,6 @@ namespace ImageEnhancementWpf
                                         .Text(desc)
                                         .FontSize(10).FontColor(TxtSecond);
 
-                                    // Принцип работы
                                     if (!string.IsNullOrWhiteSpace(principle) && principle != "—")
                                     {
                                         c.Item().Height(6);
@@ -291,7 +276,6 @@ namespace ImageEnhancementWpf
                                             .FontSize(9.5f).FontColor(TxtMuted).Italic();
                                     }
 
-                                    // Математическое описание
                                     if (!string.IsNullOrWhiteSpace(formula) && formula != "—")
                                     {
                                         c.Item().Height(8);
@@ -309,7 +293,6 @@ namespace ImageEnhancementWpf
                                             .FontColor(Accent);
                                     }
 
-                                    // Параметры обработки
                                     if (parameters != null && parameters.Count > 0)
                                     {
                                         c.Item().Height(8);
@@ -343,7 +326,6 @@ namespace ImageEnhancementWpf
                                 }
                                 else
                                 {
-                                    // Несколько методов — нумерованный список с формулами
                                     for (int i = 0; i < pipeline.Count; i++)
                                     {
                                         var (name, stepFormula) = pipeline[i];
@@ -385,7 +367,6 @@ namespace ImageEnhancementWpf
 
                         col.Item().Height(14);
 
-                        // ── МЕТРИКИ КАЧЕСТВА ──────────────────────────────
                         col.Item()
                             .Background(BgCard)
                             .Border(1).BorderColor(BorderMain)
@@ -444,7 +425,6 @@ namespace ImageEnhancementWpf
                                             Math.Clamp(sharpProc / Math.Max(sharpOrig * 2, 1), 0, 1));
                                     }
 
-                                    // Итоговое заключение
                                     c.Item().Height(12);
                                     string verdict;
                                     string verdictColor;
@@ -498,7 +478,6 @@ namespace ImageEnhancementWpf
                                 }
                             });
 
-                        // ── ПОДВАЛ ────────────────────────────────────────
                         col.Item().Height(20);
                         col.Item()
                             .BorderTop(1).BorderColor(BorderMain)
@@ -517,7 +496,6 @@ namespace ImageEnhancementWpf
             }).GeneratePdf(outputPath);
         }
 
-        // ── Вспомогательные методы ────────────────────────────────────────────
 
         private static void MetaChip(RowDescriptor row, string label, string value)
         {

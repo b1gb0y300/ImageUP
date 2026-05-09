@@ -23,7 +23,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Шапка -->
         <Grid Grid.Row="0" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -51,16 +50,12 @@
             </StackPanel>
         </Grid>
 
-        <!-- Содержимое: 2-колонная сетка по Golden Canon -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <!-- Левая панель φ⁻² = 38.2% от 900 = 344px -->
                 <ColumnDefinition Width="344" MinWidth="260"/>
-                <!-- Правая панель φ⁻¹ = 61.8% -->
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- ─── Левая: Статистика ──────────────────────────── -->
             <Border Grid.Column="0"
                     Background="{DynamicResource CardBrush}"
                     CornerRadius="16,0,0,16"
@@ -68,18 +63,15 @@
                     Padding="21" Margin="0,0,0,0"
                     Effect="{StaticResource CardShadow}">
                 <StackPanel x:Name="StatsPanel">
-                    <!-- Заполняется из кода -->
                 </StackPanel>
             </Border>
 
-            <!-- ─── Правая: Список карточек ───────────────────── -->
             <Border Grid.Column="1"
                     Background="{DynamicResource CardBrush}"
                     CornerRadius="0,16,16,0"
                     BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1,1,1,1"
                     Effect="{StaticResource CardShadow}">
                 <Grid>
-                    <!-- Пустое состояние -->
                     <Grid x:Name="EmptyPanel" Visibility="Collapsed">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                             <TextBlock Text="📋" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,12"/>
@@ -93,7 +85,6 @@
                                        MaxWidth="320" TextWrapping="Wrap"/>
                         </StackPanel>
                     </Grid>
-                    <!-- Список карточек -->
                     <ScrollViewer x:Name="CardsScrollViewer"
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled"

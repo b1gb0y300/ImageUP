@@ -13,7 +13,6 @@
     </Window.Background>
 
     <Window.Resources>
-        <!-- Градиент героя — тёмно-фиолетовый, независимо от темы -->
         <LinearGradientBrush x:Key="HeroBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
             <GradientStop Color="#0F0B1E" Offset="0"/>
             <GradientStop Color="#1E1040" Offset="0.4"/>
@@ -38,14 +37,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- ─── Шапка + герой ─────────────────────────────────────────── -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Навигация -->
             <Grid Grid.Row="0" Margin="34,13,34,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -78,7 +75,6 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Герой-секция -->
             <Grid Grid.Row="1" Margin="0,24,0,0">
                 <Grid.Background>
                     <StaticResource ResourceKey="HeroBackgroundBrush"/>
@@ -135,7 +131,6 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- ─── App Preview Mockup ───────────────────────── -->
                     <Border Grid.Column="1" Margin="34,0,0,0" CornerRadius="20"
                             ClipToBounds="True"
                             Background="#08080E"
@@ -150,7 +145,6 @@
                                 <RowDefinition Height="56"/>
                             </Grid.RowDefinitions>
 
-                            <!-- Window chrome -->
                             <Border Grid.Row="0" Background="#111118" Padding="10,0">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -164,14 +158,12 @@
                                 </Grid>
                             </Border>
 
-                            <!-- App body -->
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="80"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!-- Methods panel -->
                                 <Border Grid.Column="0" Background="#0F0F18"
                                         BorderBrush="#1E1E2A" BorderThickness="0,0,1,0"
                                         Padding="7,8">
@@ -206,10 +198,8 @@
                                     </StackPanel>
                                 </Border>
 
-                                <!-- Image viewer: before/after overlay split (single image) -->
                                 <Border Grid.Column="1" Background="#0A0A14" ClipToBounds="True">
                                     <Grid>
-                                        <!-- Layer 1: dim shapes (the "before" — covers full width) -->
                                         <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center"
                                                  Width="140" Height="170" Opacity="0.13">
                                             <Ellipse.Fill>
@@ -229,16 +219,13 @@
                                             </Ellipse.Fill>
                                         </Ellipse>
 
-                                        <!-- Layer 2: right-half enhanced overlay (clipped to right 50%) -->
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <!-- Right column: bright shapes centered at the same point as dim layer -->
                                             <Border Grid.Column="1" ClipToBounds="True">
                                                 <Grid>
-                                                    <!-- Ellipse centered at left edge of this column = center of full viewer -->
                                                     <Ellipse HorizontalAlignment="Left" VerticalAlignment="Center"
                                                              Width="140" Height="170" Margin="-70,0,0,0" Opacity="0.8">
                                                         <Ellipse.Fill>
@@ -270,7 +257,6 @@
                                             </Border>
                                         </Grid>
 
-                                        <!-- Labels -->
                                         <Border VerticalAlignment="Top" HorizontalAlignment="Left"
                                                 Margin="6,5,0,0" Background="#181828" CornerRadius="3" Padding="4,2">
                                             <TextBlock Text="ДО" FontSize="8" Foreground="#44445A"/>
@@ -280,7 +266,6 @@
                                             <TextBlock Text="ПОСЛЕ" FontSize="8" Foreground="#6366F1"/>
                                         </Border>
 
-                                        <!-- Divider with glow -->
                                         <Border Width="2" HorizontalAlignment="Center">
                                             <Border.Background>
                                                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -295,7 +280,6 @@
                                             </Border.Effect>
                                         </Border>
 
-                                        <!-- Handle circle -->
                                         <Border Width="22" Height="22" CornerRadius="11"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <Border.Background>
@@ -314,7 +298,6 @@
                                 </Border>
                             </Grid>
 
-                            <!-- Metrics bar -->
                             <Border Grid.Row="2" Background="#0F0F18"
                                     BorderBrush="#1E1E2A" BorderThickness="0,1,0,0"
                                     Padding="12,8">
@@ -351,7 +334,6 @@
             </Grid>
         </Grid>
 
-        <!-- ─── Карточки специализаций ─────────────────────────────────── -->
         <Grid Grid.Row="1" Background="{DynamicResource DarkPanelBrush}">
             <StackPanel Margin="34,21,34,21">
                 <TextBlock Text="Специализированные решения для профессионалов"
@@ -439,7 +421,6 @@
             </StackPanel>
         </Grid>
 
-        <!-- ─── Футер ─────────────────────────────────────────────────── -->
         <Border Grid.Row="2" Background="{DynamicResource SurfaceInputBrush}" Padding="32,10">
             <TextBlock Text="© 2026 ImageUP Platform. Все права защищены."
                        FontSize="11"

@@ -18,42 +18,34 @@ namespace ImageEnhancementWpf
         {
             _suppressEvents = true;
 
-            // Тема
             if (ThemeManager.IsLightTheme)
                 LightThemeButton.IsChecked = true;
             else
                 DarkThemeButton.IsChecked = true;
 
-            // Автопоказ результата
             AutoShowResultToggle.IsChecked = AppSettings.Current.AutoShowResult;
 
-            // Формат по умолчанию
             DefaultFormatCombo.SelectedIndex = AppSettings.Current.DefaultSaveFormat switch
             {
                 "jpeg" => 1,
                 "bmp"  => 2,
-                _      => 0   // png
+                _      => 0  
             };
 
-            // JPEG качество
             JpegQualitySlider.Value = AppSettings.Current.JpegQuality;
             JpegQualityLabel.Text   = $"{AppSettings.Current.JpegQuality}%";
 
-            // Интерполяция
             InterpolationCombo.SelectedIndex = AppSettings.Current.InterpolationMode switch
             {
                 "bicubic" => 1,
                 "nearest" => 2,
-                _         => 0   // bilinear
+                _         => 0  
             };
 
-            // Подтверждение сброса
             ConfirmResetToggle.IsChecked = AppSettings.Current.ConfirmReset;
 
             _suppressEvents = false;
         }
-
-        // ── Тема ──────────────────────────────────────────────────────────────
 
         private void DarkThemeButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -67,16 +59,12 @@ namespace ImageEnhancementWpf
             ThemeManager.SetTheme(true);
         }
 
-        // ── Автопоказ результата ───────────────────────────────────────────────
-
         private void AutoShowResult_Changed(object sender, RoutedEventArgs e)
         {
             if (_suppressEvents) return;
             AppSettings.Current.AutoShowResult = AutoShowResultToggle.IsChecked == true;
             AppSettings.Current.Save();
         }
-
-        // ── Формат экспорта ───────────────────────────────────────────────────
 
         private void DefaultFormat_Changed(object sender, SelectionChangedEventArgs e)
         {
@@ -90,8 +78,6 @@ namespace ImageEnhancementWpf
             AppSettings.Current.Save();
         }
 
-        // ── Качество JPEG ──────────────────────────────────────────────────────
-
         private void JpegQuality_Changed(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (_suppressEvents) return;
@@ -100,8 +86,6 @@ namespace ImageEnhancementWpf
             AppSettings.Current.JpegQuality = q;
             AppSettings.Current.Save();
         }
-
-        // ── Интерполяция ──────────────────────────────────────────────────────
 
         private void Interpolation_Changed(object sender, SelectionChangedEventArgs e)
         {
@@ -115,16 +99,12 @@ namespace ImageEnhancementWpf
             AppSettings.Current.Save();
         }
 
-        // ── Подтверждение сброса ──────────────────────────────────────────────
-
         private void ConfirmReset_Changed(object sender, RoutedEventArgs e)
         {
             if (_suppressEvents) return;
             AppSettings.Current.ConfirmReset = ConfirmResetToggle.IsChecked == true;
             AppSettings.Current.Save();
         }
-
-        // ── Сброс всех настроек ───────────────────────────────────────────────
 
         private void ResetAll_Click(object sender, RoutedEventArgs e)
         {

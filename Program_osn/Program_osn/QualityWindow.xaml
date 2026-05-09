@@ -28,7 +28,6 @@
                    Foreground="{DynamicResource TextPrimaryBrush}"
                    Margin="0,0,0,16"/>
 
-        <!-- SSIM -->
         <Border Grid.Row="1" Background="{DynamicResource CardBrush}"
                 CornerRadius="14" Padding="16" Margin="0,0,0,10"
                 BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1"
@@ -51,7 +50,6 @@
             </Grid>
         </Border>
 
-        <!-- PSNR -->
         <Border Grid.Row="2" Background="{DynamicResource CardBrush}"
                 CornerRadius="14" Padding="16" Margin="0,0,0,10"
                 BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1"
@@ -74,7 +72,6 @@
             </Grid>
         </Border>
 
-        <!-- Sharpness -->
         <Border Grid.Row="3" Background="{DynamicResource CardBrush}"
                 CornerRadius="14" Padding="16" Margin="0,0,0,10"
                 BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1"
@@ -110,7 +107,6 @@
             </Grid>
         </Border>
 
-        <!-- Hint -->
         <Border Grid.Row="4" Background="{DynamicResource SurfaceInputBrush}"
                 CornerRadius="12" Padding="12" Margin="0,0,0,16"
                 BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1">

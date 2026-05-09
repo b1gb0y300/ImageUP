@@ -24,7 +24,6 @@ namespace ImageEnhancementWpf
 
             bool sameSize = original.Width == processed.Width && original.Height == processed.Height;
 
-            // SSIM
             if (sameSize)
             {
                 try
@@ -39,7 +38,6 @@ namespace ImageEnhancementWpf
                 SsimValueText.Text = "— (разный размер)";
             }
 
-            // PSNR
             if (sameSize)
             {
                 try
@@ -54,7 +52,6 @@ namespace ImageEnhancementWpf
                 PsnrValueText.Text = "— (разный размер)";
             }
 
-            // Sharpness — работает всегда, без эталона
             try
             {
                 double sharpOrig = Metrics.ComputeSharpness(original);

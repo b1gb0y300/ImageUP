@@ -49,16 +49,12 @@
                         Click="BackButton_Click"/>
             </Grid>
 
-            <!-- ─── Основной контент: 2-колонная Golden Canon сетка ─────── -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <!-- φ⁻² ≈ 22% — навигация -->
                     <ColumnDefinition Width="200" MinWidth="160"/>
-                    <!-- φ⁻¹ = 78% — контент -->
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- ─── Левая: Навигация ─────────────────────────────── -->
                 <Border Grid.Column="0"
                         Background="{DynamicResource CardBrush}"
                         BorderBrush="{DynamicResource BorderSubtleBrush}"
@@ -101,7 +97,6 @@
                     </StackPanel>
                 </Border>
 
-                <!-- ─── Правая: Контент ──────────────────────────────── -->
                 <ScrollViewer Grid.Column="1" x:Name="ContentScroller"
                               VerticalScrollBarVisibility="Auto" Padding="0,4,4,0">
                 <Border Background="{DynamicResource SurfaceInputBrush}"
@@ -124,7 +119,6 @@ ImageUP — настольная платформа для улучшения и
                                    Foreground="{DynamicResource TextSecondary2Brush}"
                                    Margin="0,20,0,10"/>
 
-                        <!-- ─── Method Category Cards (2×2) ─── -->
                         <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -135,7 +129,6 @@ ImageUP — настольная платформа для улучшения и
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <!-- Контраст & Коррекция -->
                             <Border Grid.Column="0" Grid.Row="0" Margin="0,0,5,5"
                                     CornerRadius="10" ClipToBounds="True"
                                     Background="{DynamicResource CardBrush}"
@@ -188,7 +181,6 @@ ImageUP — настольная платформа для улучшения и
                                 </Grid>
                             </Border>
 
-                            <!-- Шумоподавление -->
                             <Border Grid.Column="1" Grid.Row="0" Margin="5,0,0,5"
                                     CornerRadius="10" ClipToBounds="True"
                                     Background="{DynamicResource CardBrush}"
@@ -238,7 +230,6 @@ ImageUP — настольная платформа для улучшения и
                                 </Grid>
                             </Border>
 
-                            <!-- Резкость & Восстановление -->
                             <Border Grid.Column="0" Grid.Row="1" Margin="0,0,5,0"
                                     CornerRadius="10" ClipToBounds="True"
                                     Background="{DynamicResource CardBrush}"
@@ -285,7 +276,6 @@ ImageUP — настольная платформа для улучшения и
                                 </Grid>
                             </Border>
 
-                            <!-- Анализ & Сегментация -->
                             <Border Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"
                                     CornerRadius="10" ClipToBounds="True"
                                     Background="{DynamicResource CardBrush}"
@@ -333,7 +323,6 @@ ImageUP — настольная платформа для улучшения и
                             </Border>
                         </Grid>
 
-                        <!-- Additional features row -->
                         <StackPanel Margin="0,0,0,4">
                             <TextBlock Text="• Режим сравнения До/После — переключение вкладок и интерактивный слайдер."
                                        TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}" LineHeight="22"/>
@@ -343,12 +332,11 @@ ImageUP — настольная платформа для улучшения и
                                        TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}" LineHeight="22" Margin="0,4,0,0"/>
                         </StackPanel>
 
-                        <TextBlock Text="Горячие клавиши"
+                            <TextBlock Text="Горячие клавиши"
                                    FontSize="15" FontWeight="SemiBold"
                                    Foreground="{DynamicResource TextSecondary2Brush}"
                                    Margin="0,20,0,10"/>
-                        <!-- Keyboard shortcut rows -->
-                        <Border Background="{DynamicResource CardBrush}" CornerRadius="10" Padding="12,8"
+                            <Border Background="{DynamicResource CardBrush}" CornerRadius="10" Padding="12,8"
                                 BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1"
                                 Margin="0,0,0,10">
                             <StackPanel>
@@ -433,7 +421,6 @@ ImageUP — настольная платформа для улучшения и
                                    Foreground="{DynamicResource TextSecondary2Brush}"
                                    Margin="0,20,0,10"/>
 
-                        <!-- Metric cards side-by-side -->
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>

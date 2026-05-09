@@ -213,7 +213,6 @@
                 </StackPanel>
             </Border>
 
-            <!-- ─── Секция «Экспорт» ──────────────────────────────────────── -->
             <Border Background="{DynamicResource CardBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="1" CornerRadius="14"
@@ -224,7 +223,6 @@
                                Foreground="{DynamicResource TextMutedBrush}"
                                Margin="0,0,0,14"/>
 
-                    <!-- Формат сохранения -->
                     <Border Background="{DynamicResource SurfaceInputBrush}"
                             BorderBrush="{DynamicResource BorderSubtleBrush}"
                             BorderThickness="1" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
@@ -253,7 +251,6 @@
                         </Grid>
                     </Border>
 
-                    <!-- Качество JPEG -->
                     <Border Background="{DynamicResource SurfaceInputBrush}"
                             BorderBrush="{DynamicResource BorderSubtleBrush}"
                             BorderThickness="1" CornerRadius="10" Padding="16,12">
@@ -282,7 +279,6 @@
                 </StackPanel>
             </Border>
 
-            <!-- ─── Секция «Обработка» ────────────────────────────────────── -->
             <Border Background="{DynamicResource CardBrush}"
                     BorderBrush="{DynamicResource BorderSubtleBrush}"
                     BorderThickness="1" CornerRadius="14"
@@ -293,7 +289,6 @@
                                Foreground="{DynamicResource TextMutedBrush}"
                                Margin="0,0,0,14"/>
 
-                    <!-- Интерполяция -->
                     <Border Background="{DynamicResource SurfaceInputBrush}"
                             BorderBrush="{DynamicResource BorderSubtleBrush}"
                             BorderThickness="1" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
@@ -322,7 +317,6 @@
                         </Grid>
                     </Border>
 
-                    <!-- Подтверждение сброса -->
                     <Border Background="{DynamicResource SurfaceInputBrush}"
                             BorderBrush="{DynamicResource BorderSubtleBrush}"
                             BorderThickness="1" CornerRadius="10" Padding="16,12">
@@ -350,7 +344,6 @@
                 </StackPanel>
             </Border>
 
-            <!-- ─── Сброс настроек ─────────────────────────────────────────── -->
             <Border Background="{DynamicResource CardBrush}"
                     BorderBrush="#EF444433"
                     BorderThickness="1" CornerRadius="14"

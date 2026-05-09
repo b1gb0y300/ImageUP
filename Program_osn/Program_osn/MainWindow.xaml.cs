@@ -950,7 +950,6 @@ namespace ImageEnhancementWpf
             MethodParametersPanel.Visibility = MethodParametersStack.Children.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        /// <summary>Считывает текущие значения параметров выбранного метода для PDF-отчёта.</summary>
         private Dictionary<string, string> CollectCurrentParameters()
         {
             var p = new Dictionary<string, string>();
@@ -1024,7 +1023,6 @@ namespace ImageEnhancementWpf
                 MessageBox.Show("Выберите метод слева.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
-            // Применить к оригиналу — сбросить прежнюю цепочку, сохранить состояние для undo
             PushUndo();
             _pipelineSteps.Clear();
             _pipelineFormulas.Clear();
@@ -1048,15 +1046,10 @@ namespace ImageEnhancementWpf
                 MessageBox.Show("Выберите метод слева.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
-            // Сохраняем состояние для undo перед шагом цепочки
             PushUndo();
             RunApply((Bitmap)_processedBitmap!.Clone(), isChainStep: true);
         }
 
-        /// <summary>
-        /// Запускает обработку. <paramref name="sourceClone"/> — клон источника (освобождается внутри).
-        /// <paramref name="isChainStep"/> = true → шаг цепочки, false → применение к оригиналу.
-        /// </summary>
         private void RunApply(Bitmap sourceClone, bool isChainStep)
         {
             string methodId   = _selectedMethodId!;
@@ -1089,7 +1082,6 @@ namespace ImageEnhancementWpf
                             {
                                 SetProcessedImage(result);
 
-                                // Метрики считаем к оригиналу, а не к предыдущему шагу
                                 double ssim = double.NaN, psnr = double.NaN;
                                 if (_originalBitmap != null &&
                                     result.Width  == _originalBitmap.Width &&
@@ -1106,7 +1098,6 @@ namespace ImageEnhancementWpf
                                     methodId, methodName, _currentImageFileName,
                                     ssim, psnr, thumbFile);
 
-                                // Обновляем цепочку
                                 _pipelineSteps.Add($"{methodIcon} {methodName}");
                                 _pipelineFormulas.Add(_currentFormula ?? "—");
                                 UpdatePipelineDisplay();
@@ -1123,13 +1114,10 @@ namespace ImageEnhancementWpf
                 }, TaskScheduler.Default);
         }
 
-        // ── Undo ──────────────────────────────────────────────────────────
-
         private void PushUndo()
         {
             if (_undoStack.Count >= 5)
             {
-                // убираем самое старое — Stack не поддерживает прямой доступ, конвертируем
                 var list = new List<(Bitmap?, List<string>, List<string>)>(_undoStack);
                 list[list.Count - 1].Item1?.Dispose();
                 list.RemoveAt(list.Count - 1);
@@ -1166,8 +1154,6 @@ namespace ImageEnhancementWpf
             UpdateChainButton();
         }
 
-        // ── Pipeline helpers ───────────────────────────────────────────────
-
         private void UpdateChainButton()
         {
             MethodChainButton.IsEnabled =
@@ -1199,7 +1185,6 @@ namespace ImageEnhancementWpf
 
             foreach (var step in _pipelineSteps)
             {
-                // Стрелка
                 PipelineStepsPanel.Children.Add(new TextBlock
                 {
                     Text = " → ",
@@ -1424,18 +1409,12 @@ namespace ImageEnhancementWpf
             var fontFamily = new System.Windows.Media.FontFamily("Cambria Math, Segoe UI, serif");
             const int fontSize = 15;
             var tb = CreateFormulaTextBlock(formula.Replace("\n", " ").Trim(), fontSize, fontFamily);
-            // SetResourceReference обеспечивает автообновление цвета при смене темы
             tb.SetResourceReference(TextBlock.ForegroundProperty, "TextSecondary2Brush");
             tb.TextWrapping = TextWrapping.Wrap;
             tb.LineHeight = 26;
             panel.Children.Add(tb);
         }
 
-        /// <summary>
-        /// Строит TextBlock с поддержкой подстрочных (_x или _{текст}) и
-        /// надстрочных (^x или ^{текст}) символов.
-        /// Цвет не устанавливается — наследуется от родительского TextBlock.
-        /// </summary>
         private static TextBlock CreateFormulaTextBlock(string text, int fontSize,
             System.Windows.Media.FontFamily fontFamily)
         {
@@ -1457,11 +1436,11 @@ namespace ImageEnhancementWpf
                     string piece;
                     if (i < text.Length && text[i] == '{')
                     {
-                        i++; // skip '{'
+                        i++; 
                         int s = i;
                         while (i < text.Length && text[i] != '}') i++;
                         piece = text.Substring(s, i - s);
-                        if (i < text.Length) i++; // skip '}'
+                        if (i < text.Length) i++; 
                     }
                     else
                     {
@@ -1473,7 +1452,6 @@ namespace ImageEnhancementWpf
                         BaselineAlignment = isSub ? BaselineAlignment.Subscript : BaselineAlignment.Superscript,
                         FontSize   = fontSize * 0.70,
                         FontFamily = fontFamily
-                        // Foreground не задаём — наследуется от TextBlock
                     });
                     continue;
                 }
@@ -1871,7 +1849,6 @@ namespace ImageEnhancementWpf
 
         #endregion
 
-        // ──────────────────────────────────────────────────────────────────
         #region Экспорт сравнения
 
         private void ExportComparison_Click(object sender, RoutedEventArgs e)
@@ -1934,7 +1911,6 @@ namespace ImageEnhancementWpf
 
         #endregion
 
-        // ──────────────────────────────────────────────────────────────────
         #region Экспорт PDF-отчёта
 
         private void ExportReport_Click(object sender, RoutedEventArgs e)

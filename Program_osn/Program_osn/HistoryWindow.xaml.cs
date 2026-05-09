@@ -52,7 +52,6 @@ namespace ImageEnhancementWpf
 
         private FrameworkElement BuildCard(ProcessingHistoryEntry entry)
         {
-            // Корневой контейнер карточки
             var card = new Border
             {
                 Width           = 188,
@@ -71,7 +70,6 @@ namespace ImageEnhancementWpf
             var stack = new StackPanel();
             card.Child = stack;
 
-            // Миниатюра
             var thumbBorder = new Border
             {
                 Height     = 120,
@@ -90,7 +88,6 @@ namespace ImageEnhancementWpf
             }
             else
             {
-                // Плейсхолдер
                 var placeholder = new TextBlock
                 {
                     Text              = GetMethodIcon(entry.MethodId),
@@ -103,10 +100,8 @@ namespace ImageEnhancementWpf
             }
             stack.Children.Add(thumbBorder);
 
-            // Информационный блок
             var info = new StackPanel { Margin = new Thickness(12, 10, 12, 12) };
 
-            // Название метода с иконкой
             var nameRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 4) };
             nameRow.Children.Add(new TextBlock
             {
@@ -126,7 +121,6 @@ namespace ImageEnhancementWpf
             });
             info.Children.Add(nameRow);
 
-            // Имя файла
             if (!string.IsNullOrEmpty(entry.ImageFileName))
             {
                 info.Children.Add(new TextBlock
@@ -139,7 +133,6 @@ namespace ImageEnhancementWpf
                 });
             }
 
-            // Метрики SSIM и PSNR
             bool hasSsim = !double.IsNaN(entry.Ssim);
             bool hasPsnr = !double.IsNaN(entry.Psnr);
 
@@ -165,7 +158,6 @@ namespace ImageEnhancementWpf
                 info.Children.Add(metricsRow);
             }
 
-            // Дата/время
             info.Children.Add(new TextBlock
             {
                 Text       = FormatTimestamp(entry.Timestamp),
@@ -235,7 +227,6 @@ namespace ImageEnhancementWpf
             StatsPanel.Children.Clear();
             var history = AppSettings.Current.History;
 
-            // ── Метка секции ──────────────────────────────────────────
             StatsPanel.Children.Add(new TextBlock
             {
                 Text = "СТАТИСТИКА",
@@ -244,7 +235,6 @@ namespace ImageEnhancementWpf
                 Margin = new Thickness(0, 0, 0, 13)
             });
 
-            // ── Общее число обработок ─────────────────────────────────
             var totalCard = new Border
             {
                 Background = (Brush)FindResource("SurfaceInputBrush"),
@@ -273,7 +263,6 @@ namespace ImageEnhancementWpf
 
             if (history.Count == 0) return;
 
-            // ── Средние метрики ────────────────────────────────────────
             var ssimVals = history.Where(e => !double.IsNaN(e.Ssim)).Select(e => e.Ssim).ToList();
             var psnrVals = history.Where(e => !double.IsNaN(e.Psnr)).Select(e => e.Psnr).ToList();
 
@@ -319,7 +308,6 @@ namespace ImageEnhancementWpf
                 "PSNR dB", "#6366F1");
             StatsPanel.Children.Add(metricsGrid);
 
-            // ── Топ методы ──────────────────────────────────────────
             StatsPanel.Children.Add(new TextBlock
             {
                 Text = "ТОП МЕТОДЫ",
@@ -369,7 +357,6 @@ namespace ImageEnhancementWpf
                 barContent.Children.Add(barLabel);
                 bar.Child = barContent;
 
-                // Set fill width after layout
                 double ratio = maxCnt > 0 ? (double)cnt / maxCnt : 0;
                 bar.Loaded += (_, _) => fill.Width = bar.ActualWidth * ratio;
 
@@ -396,7 +383,6 @@ namespace ImageEnhancementWpf
                 MessageBoxImage.Question);
             if (result != MessageBoxResult.Yes) return;
 
-            // Удаляем миниатюры
             foreach (var entry in AppSettings.Current.History)
             {
                 if (!string.IsNullOrEmpty(entry.ThumbnailFileName))
